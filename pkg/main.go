@@ -21,4 +21,7 @@ func main () {
 	}()
 
 	_, err = infrastructure.InitDb(cfg.MongodbUri)
+	if err != nil {
+		log.Fatalln("Could not establish a connection to the database")
+	}
 }
