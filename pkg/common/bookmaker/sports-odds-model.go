@@ -1,7 +1,5 @@
 package bookmaker
 
-import "time"
-
 type MatchOdds struct {
 	H2h			[]float32		`json:"h2h"`
 }
@@ -19,7 +17,7 @@ type SportOdds struct {
 	SportKey		string					`json:"sport_key"`
 	SportNice		string					`json:"sport_nice"`
 	Teams			[]string				`json:"teams"`
-	CommenceTime	time.Time				`json:"commence_time"`
+	CommenceTime	string				`json:"commence_time"`
 	HomeTeam		string					`json:"home_team"`
 	Sites			[]SportOddSites			`json:"sites"`
 }
