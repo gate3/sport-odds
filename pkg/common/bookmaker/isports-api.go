@@ -1,6 +1,6 @@
 package bookmaker
 
-type SportsApi interface {
+type IBookmakerApi interface {
 	FetchSports () ([]Sport, error)
 	FetchOdds	(sportType, region, market string) ([]SportOdds, error)
 }
