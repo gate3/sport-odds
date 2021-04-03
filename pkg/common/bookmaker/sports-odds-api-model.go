@@ -12,7 +12,7 @@ type SportOddSites struct {
 	SitesCount	int			`json:"sites_count"`
 }
 
-type SportOdds struct {
+type SportOddsApiModel struct {
 	Id				string					`json:"id"`
 	SportKey		string					`json:"sport_key"`
 	SportNice		string					`json:"sport_nice"`

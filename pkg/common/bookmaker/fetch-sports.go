@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-func (bk BookmakersApi) FetchSports (sports *[]Sport) error {
+func (bk BookmakersApi) FetchSports (sports *[]SportApiModel) error {
 	fullApiUrl := bk.baseUrl + "sports?apiKey=" + bk.apiToken
 
 	resp, err := http.Get(fullApiUrl)
