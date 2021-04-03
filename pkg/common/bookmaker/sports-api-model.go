@@ -1,6 +1,6 @@
 package bookmaker
 
-type Sport struct {
+type SportApiModel struct {
 	Key 		string		`json:"key"`
 	Active		bool		`json:"active"`
 	Group		string		`json:"group"`

@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func (bk BookmakersApi) FetchOdds (sportType, region, market string, odds *[]SportOdds) error {
+func (bk BookmakersApi) FetchOdds (sportType, region, market string, odds *[]SportOddsApiModel) error {
 	var stBuilder strings.Builder
 	stBuilder.WriteString(bk.baseUrl)
 	stBuilder.WriteString("odds?apiKey=" + bk.apiToken)

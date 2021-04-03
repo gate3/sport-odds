@@ -5,9 +5,10 @@ import (
 )
 
 type EnvVariables struct {
-	MongodbUri     string `mapstructure:"MONGODB_URI"`
-	OddsApiBaseUrl string `mapstructure:"ODDS_API_BASE_URL"`
-	OddsApiKey     string `mapstructure:"ODDS_API_KEY"`
+	DatabaseUri     	string 		`mapstructure:"DATABASE_URI"`
+	OddsApiBaseUrl 		string 		`mapstructure:"ODDS_API_BASE_URL"`
+	OddsApiKey     		string 		`mapstructure:"ODDS_API_KEY"`
+	DatabaseName		string		`mapstructure:"MONGO_DATABASE_NAME"`
 }
 
 func LoadEnvironmentVariables (path string) (envVariables EnvVariables, err error) {
