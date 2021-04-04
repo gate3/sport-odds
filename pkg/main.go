@@ -22,7 +22,13 @@ func main () {
 	}()
 
 	srv := services.NewServices(cfg)
+
 	_, err = srv.SaveAllSportsRecords()
+	if err != nil {
+		log.Fatal("Error loading config:", err)
+	}
+
+	_, err = srv.SaveUpcomingFixtureRecords()
 	if err != nil {
 		log.Fatal("Error loading config:", err)
 	}
