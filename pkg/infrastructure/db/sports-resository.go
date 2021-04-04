@@ -21,8 +21,8 @@ type SportsModel struct {
 	UpdatedAt 	time.Time          	`bson:"updated_at"`
 }
 
-func (d Repository) SaveSports (sports *[]bookmaker.SportApiModel, db *mongo.Database) (*mongo.InsertManyResult, error) {
-	collection := db.Collection(SportsCollection)
+func (r Repository) SaveSports (sports *[]bookmaker.SportApiModel, db *mongo.Database) ([]interface{}, error) {
+	collection := r.db.Collection(SportsCollection)
 
 	var sportsModelList []interface{}
 
@@ -36,7 +36,7 @@ func (d Repository) SaveSports (sports *[]bookmaker.SportApiModel, db *mongo.Dat
 
 	res, err := collection.InsertMany(context.TODO(), sportsModelList)
 	if err != nil {
-		return &mongo.InsertManyResult{}, err
+		return []interface{}{}, err
 	}
-	return res, nil
+	return res.InsertedIDs, nil
 }

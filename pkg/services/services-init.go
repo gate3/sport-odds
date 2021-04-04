@@ -24,21 +24,14 @@ type Services struct {
 }
 
 func NewServices (cfg config.EnvVariables) *Services {
-
-	dbCon, err := db.InitDb(cfg.DatabaseUri, cfg.DatabaseName)
-	if err != nil {
-		log.Fatalln("Could not establish a connection to the database")
-	}
-
-	services, err = bookmaker.NewBookmakerApi(cfg.OddsApiBaseUrl, cfg.OddsApiKey)
+	services, err := bookmaker.NewBookmakerApi(cfg.OddsApiBaseUrl, cfg.OddsApiKey)
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
 
-	repo := db.NewRepository()
+	repo := db.NewRepository(cfg.DatabaseUri, cfg.DatabaseName)
 
 	return &Services{
-		Db: dbCon,
 		Bookmaker: services,
 		EnvVars: cfg,
 		Repository: repo,
