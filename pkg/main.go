@@ -2,11 +2,10 @@ package main
 
 import (
 	"fmt"
+	"github.com/gate3/sport-odds/pkg/services"
 	"log"
 
-	"github.com/gate3/sport-odds/pkg/common/bookmaker"
 	"github.com/gate3/sport-odds/pkg/config"
-	"github.com/gate3/sport-odds/pkg/infrastructure/db"
 )
 
 func main () {
@@ -22,33 +21,9 @@ func main () {
 		}
 	}()
 
-	dbCon, err := db.InitDb(cfg.DatabaseUri, cfg.DatabaseName)
+	srv := services.NewServices(cfg)
+	_, err = srv.SaveAllSportsRecords()
 	if err != nil {
-		log.Fatalln("Could not establish a connection to the database")
+		log.Fatal("Error loading config:", err)
 	}
-
-	bk, err := bookmaker.NewBookmakerApi(cfg.OddsApiBaseUrl, cfg.OddsApiKey)
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-
-	sp := new([]bookmaker.SportApiModel)
-	err = bk.FetchSports(sp)
-	_, err = db.SaveSports(sp, dbCon)
-	if err != nil {
-		log.Fatalln(err)
-	}
-	log.Println("Sports data saved successfully!")
-
-	odds := new([]bookmaker.SportOddsApiModel)
-	err = bk.FetchFixtures("upcoming","uk", "h2h", odds)
-	if err != nil {
-		log.Fatalln("An error occured! Could not fetch odds " + err.Error())
-	}
-
-	_, err = db.SaveFixtures(odds, dbCon)
-	if err != nil {
-		log.Fatalln("An error occurred saving odds "+ err.Error())
-	}
-	log.Println("Fixtures data saved successfully!")
 }
