@@ -10,6 +10,7 @@ import (
 
 type Services struct {
 	Db 			*mongo.Database
+	Dao			*db.Dao
 	EnvVars 	config.EnvVariables
 	Bookmaker 	*bookmaker.BookmakersApi
 }
@@ -26,9 +27,12 @@ func NewServices (cfg config.EnvVariables) *Services {
 		log.Fatalln(err.Error())
 	}
 
+	dao := db.NewDao()
+
 	return &Services{
 		Db: dbCon,
 		Bookmaker: bk,
 		EnvVars: cfg,
+		Dao: dao,
 	}
 }
