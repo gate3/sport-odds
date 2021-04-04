@@ -3,15 +3,25 @@ package db
 import (
 	"github.com/gate3/sport-odds/pkg/common/bookmaker"
 	"go.mongodb.org/mongo-driver/mongo"
+	"log"
 )
 
-type Repository struct {}
-
-type IRepository interface {
-	SaveFixtures (*[]bookmaker.SportOddsApiModel, *mongo.Database) (*mongo.InsertManyResult, error)
-	SaveSports (*[]bookmaker.SportApiModel, *mongo.Database) (*mongo.InsertManyResult, error)
+type Repository struct {
+	db	*mongo.Database
 }
 
-func NewRepository () *Repository {
-	return &Repository{}
+type IRepository interface {
+	SaveFixtures (*[]bookmaker.SportOddsApiModel, *mongo.Database) ([]interface{}, error)
+	SaveSports (*[]bookmaker.SportApiModel, *mongo.Database) ([]interface{}, error)
+}
+
+func NewRepository (databaseUri, dbName string) *Repository {
+	dbCon, err := InitDb(databaseUri, dbName)
+	if err != nil {
+		log.Fatalln("Could not establish a connection to the database")
+	}
+
+	return &Repository{
+		db: dbCon,
+	}
 }

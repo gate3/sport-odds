@@ -37,8 +37,8 @@ type OddsModel struct {
 	UpdatedAt 		time.Time          		`bson:"updated_at"`
 }
 
-func (d Repository) SaveFixtures (odds *[]bookmaker.SportOddsApiModel, db *mongo.Database) (*mongo.InsertManyResult, error) {
-	collection := db.Collection(FixturesCollection)
+func (r Repository) SaveFixtures (odds *[]bookmaker.SportOddsApiModel, db *mongo.Database) ([]interface{}, error) {
+	collection := r.db.Collection(FixturesCollection)
 
 	var oddsModelList []interface{}
 
@@ -52,7 +52,7 @@ func (d Repository) SaveFixtures (odds *[]bookmaker.SportOddsApiModel, db *mongo
 	}
 	res, err := collection.InsertMany(context.TODO(), oddsModelList)
 	if err != nil {
-		return &mongo.InsertManyResult{}, err
+		return []interface{}{}, err
 	}
-	return res, nil
+	return res.InsertedIDs, nil
 }
