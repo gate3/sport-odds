@@ -8,11 +8,19 @@ import (
 	"log"
 )
 
+var services bookmaker.IBookmakerApi
+var repo db.IRepository
+
+func init () {
+	services = bookmaker.BookmakersApi{}
+	repo = db.Repository{}
+}
+
 type Services struct {
 	Db 			*mongo.Database
-	Dao			*db.Dao
+	Repository	db.IRepository
 	EnvVars 	config.EnvVariables
-	Bookmaker 	*bookmaker.BookmakersApi
+	Bookmaker 	bookmaker.IBookmakerApi
 }
 
 func NewServices (cfg config.EnvVariables) *Services {
@@ -22,17 +30,17 @@ func NewServices (cfg config.EnvVariables) *Services {
 		log.Fatalln("Could not establish a connection to the database")
 	}
 
-	bk, err := bookmaker.NewBookmakerApi(cfg.OddsApiBaseUrl, cfg.OddsApiKey)
+	services, err = bookmaker.NewBookmakerApi(cfg.OddsApiBaseUrl, cfg.OddsApiKey)
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
 
-	dao := db.NewDao()
+	repo := db.NewRepository()
 
 	return &Services{
 		Db: dbCon,
-		Bookmaker: bk,
+		Bookmaker: services,
 		EnvVars: cfg,
-		Dao: dao,
+		Repository: repo,
 	}
 }
