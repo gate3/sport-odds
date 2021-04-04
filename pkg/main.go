@@ -15,7 +15,7 @@ func main () {
 		log.Fatal("Error loading config:", err)
 	}
 
-	//Recover From Panic
+	// Recover From Panic
 	defer func() {
 		if r := recover(); r != nil {
 			fmt.Println("Recovered in f", r)
@@ -34,10 +34,21 @@ func main () {
 
 	sp := new([]bookmaker.SportApiModel)
 	err = bk.FetchSports(sp)
-
 	_, err = db.SaveSports(sp, dbCon)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	log.Println("Sports collection saved successfully!")
+	log.Println("Sports data saved successfully!")
+
+	odds := new([]bookmaker.SportOddsApiModel)
+	err = bk.FetchFixtures("upcoming","uk", "h2h", odds)
+	if err != nil {
+		log.Fatalln("An error occured! Could not fetch odds " + err.Error())
+	}
+
+	_, err = db.SaveFixtures(odds, dbCon)
+	if err != nil {
+		log.Fatalln("An error occurred saving odds "+ err.Error())
+	}
+	log.Println("Fixtures data saved successfully!")
 }

@@ -22,12 +22,13 @@ type SportsModel struct {
 }
 
 func SaveSports (sports *[]bookmaker.SportApiModel, db *mongo.Database) (*mongo.InsertManyResult, error) {
-	collection := db.Collection("sports")
+	collection := db.Collection(SportsCollection)
 
 	var sportsModelList []interface{}
 
 	for _, v := range *sports {
 		var sportModel SportsModel
+
 		sportModel.ID = primitive.NewObjectID()
 		copier.Copy(&sportModel, &v)
 		sportsModelList = append(sportsModelList, sportModel)
