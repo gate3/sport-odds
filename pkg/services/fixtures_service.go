@@ -13,6 +13,7 @@ type asyncResponse struct {
 
 func (s *Services) SaveUpcomingFixtureRecords (timeoutInSeconds int) (bool, error) {
 	c1 := make(chan asyncResponse, 1)
+	var response asyncResponse
 
 	go func() {
 		time.Sleep(time.Duration(timeoutInSeconds) * time.Second)
@@ -32,12 +33,11 @@ func (s *Services) SaveUpcomingFixtureRecords (timeoutInSeconds int) (bool, erro
 
 	select {
 		case res := <- c1:
-			if res.errorObject != nil {
-				return true, res.errorObject
-			}
+			response = res
+			break
 		case <- time.After(time.Duration(timeoutInSeconds + 20) * time.Second): // add an extra 20 seconds to the passed timeout as the limit for the request to timeout
-			return false, errors.New("api request timeout exceeded")
+			response = asyncResponse{status: false, errorObject: errors.New("api request timeout exceeded")}
 	}
 
-	return false, errors.New("an error occurred fetching and saving fixtures")
+	return response.status, response.errorObject
 }
