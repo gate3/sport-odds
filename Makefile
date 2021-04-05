@@ -1,4 +1,3 @@
 run:
-	@ cd pkg
-	@ go  build -o sports-odds .
+	@ go build -o sports-odds pkg/main.go
 	@ ./sports-odds

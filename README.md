@@ -42,7 +42,9 @@ I had a lot of fun building this project, but there are some improvements i can 
 - Rename the app.env.sample file to app.env
 - Add the required values to the newly renamed app.env file
 - Ensure all dependencies like the database are running
-- 
+- Running the app
+    - Using Make (make run)
+    - Without Make (go build -o sports-odds pkg/main.go && ./sports-odds)
 
 Cheers
 
