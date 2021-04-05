@@ -10,7 +10,7 @@ func (s *Services) SaveUpcomingFixtureRecords () (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	_, err = s.Repository.SaveFixtures(odds, s.Db)
+	_, err = s.Repository.SaveFixtures(odds)
 	if err != nil {
 		return false, err
 	}

@@ -5,7 +5,6 @@ import (
 	"github.com/gate3/sport-odds/pkg/common/bookmaker"
 	"github.com/jinzhu/copier"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
 
 	"time"
 )
@@ -37,7 +36,7 @@ type OddsModel struct {
 	UpdatedAt 		time.Time          		`bson:"updated_at"`
 }
 
-func (r Repository) SaveFixtures (odds *[]bookmaker.SportOddsApiModel, db *mongo.Database) ([]interface{}, error) {
+func (r Repository) SaveFixtures (odds *[]bookmaker.SportOddsApiModel) ([]interface{}, error) {
 	collection := r.db.Collection(FixturesCollection)
 
 	var oddsModelList []interface{}

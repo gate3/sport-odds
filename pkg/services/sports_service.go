@@ -11,7 +11,7 @@ func (s *Services) SaveAllSportsRecords () (bool, error) {
 		return false, err
 	}
 
-	_, err = s.Repository.SaveSports(sp, s.Db)
+	_, err = s.Repository.SaveSports(sp)
 	if err != nil {
 		return false, err
 	}
