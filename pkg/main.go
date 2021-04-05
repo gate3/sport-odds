@@ -25,11 +25,11 @@ func main () {
 
 	_, err = srv.SaveAllSportsRecords()
 	if err != nil {
-		log.Fatal("Error loading config:", err)
+		log.Fatal("Sports Data Error:", err)
 	}
 
-	_, err = srv.SaveUpcomingFixtureRecords()
+	_, err = srv.SaveUpcomingFixtureRecords(5)
 	if err != nil {
-		log.Fatal("Error loading config:", err)
+		log.Fatal("Fixtures Data Error:", err)
 	}
 }

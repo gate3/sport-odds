@@ -1,18 +1,43 @@
 package services
 
 import (
+	"errors"
 	"github.com/gate3/sport-odds/pkg/common/bookmaker"
+	"time"
 )
 
-func (s *Services) SaveUpcomingFixtureRecords () (bool, error) {
-	odds := new([]bookmaker.SportOddsApiModel)
-	err := s.Bookmaker.FetchFixtures("upcoming","uk", "h2h", odds)
-	if err != nil {
-		return false, err
+type asyncResponse struct {
+	status 			bool
+	errorObject 	error
+}
+
+func (s *Services) SaveUpcomingFixtureRecords (timeoutInSeconds int) (bool, error) {
+	c1 := make(chan asyncResponse, 1)
+
+	go func() {
+		time.Sleep(time.Duration(timeoutInSeconds) * time.Second)
+
+		odds := new([]bookmaker.SportOddsApiModel)
+		err := s.Bookmaker.FetchFixtures("upcoming","uk", "h2h", odds)
+		if err != nil {
+			c1 <- asyncResponse{status: false, errorObject: err}
+		}
+		_, err = s.Repository.SaveFixtures(odds)
+		if err != nil {
+			c1 <- asyncResponse{status:false, errorObject: err}
+		}
+
+		c1 <- asyncResponse{status: true, errorObject: nil}
+	}()
+
+	select {
+		case res := <- c1:
+			if res.errorObject != nil {
+				return true, res.errorObject
+			}
+		case <- time.After(time.Duration(timeoutInSeconds + 20) * time.Second): // add an extra 20 seconds to the passed timeout as the limit for the request to timeout
+			return false, errors.New("api request timeout exceeded")
 	}
-	_, err = s.Repository.SaveFixtures(odds)
-	if err != nil {
-		return false, err
-	}
-	return true, nil
+
+	return false, errors.New("an error occurred fetching and saving fixtures")
 }

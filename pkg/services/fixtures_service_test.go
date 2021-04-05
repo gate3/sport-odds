@@ -23,7 +23,7 @@ func Test_SaveUpcomingFixtureRecords_Runs_Without_Errors (t *testing.T) {
 		Bookmaker: mockBk,
 	}
 
-	_, err := sr.SaveUpcomingFixtureRecords()
+	_, err := sr.SaveUpcomingFixtureRecords(0)
 	if err != nil {
 		t.Fail()
 	}
@@ -49,7 +49,7 @@ func Test_SaveUpcomingFixtureRecords_Returns_Database_Errors_Correctly (t *testi
 		Bookmaker: mockBk,
 	}
 
-	_, err := sr.SaveUpcomingFixtureRecords()
+	_, err := sr.SaveUpcomingFixtureRecords(0)
 	if err != nil && err.Error() != databaseError {
 		assertions.Fail("Expected a database error to be thrown")
 	}
@@ -72,7 +72,7 @@ func Test_SaveUpcomingFixtureRecords_Returns_OddsAPI_Errors_Correctly (t *testin
 		Bookmaker: mockBk,
 	}
 
-	_, err := sr.SaveUpcomingFixtureRecords()
+	_, err := sr.SaveUpcomingFixtureRecords(0)
 	if err != nil && err.Error() != mockApiErrorResponse {
 		assertions.Fail("Expected an api error to be thrown")
 	}
