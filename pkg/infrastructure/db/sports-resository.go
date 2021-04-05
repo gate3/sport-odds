@@ -7,7 +7,6 @@ import (
 	"github.com/gate3/sport-odds/pkg/common/bookmaker"
 	"github.com/jinzhu/copier"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type SportsModel struct {
@@ -21,7 +20,7 @@ type SportsModel struct {
 	UpdatedAt 	time.Time          	`bson:"updated_at"`
 }
 
-func (r Repository) SaveSports (sports *[]bookmaker.SportApiModel, db *mongo.Database) ([]interface{}, error) {
+func (r Repository) SaveSports (sports *[]bookmaker.SportApiModel) ([]interface{}, error) {
 	collection := r.db.Collection(SportsCollection)
 
 	var sportsModelList []interface{}

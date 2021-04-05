@@ -11,8 +11,8 @@ type Repository struct {
 }
 
 type IRepository interface {
-	SaveFixtures (*[]bookmaker.SportOddsApiModel, *mongo.Database) ([]interface{}, error)
-	SaveSports (*[]bookmaker.SportApiModel, *mongo.Database) ([]interface{}, error)
+	SaveFixtures (*[]bookmaker.SportOddsApiModel) ([]interface{}, error)
+	SaveSports (*[]bookmaker.SportApiModel) ([]interface{}, error)
 }
 
 func NewRepository (databaseUri, dbName string) *Repository {
